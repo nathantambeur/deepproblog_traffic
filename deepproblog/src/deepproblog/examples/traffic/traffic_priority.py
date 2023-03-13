@@ -18,12 +18,12 @@ networks= []
 for dir  in directions:
     cnn = CNN5()
     net = Network(cnn, dir+"_net", batching=True)
-    net.optimizer = torch.optim.Adam(cnn.parameters(), lr=1e-3)
+    net.optimizer = torch.optim.Adam(cnn.parameters(), lr=1e-5)
     networks.append(net)
 
 cnn = CNN3()
 net = Network(cnn , "priority_net", batching=True)
-net.optimizer = torch.optim.Adam(cnn.parameters(), lr=1e-3)
+net.optimizer = torch.optim.Adam(cnn.parameters(), lr=1e-5)
 networks.append(net)
 
 model = Model("priority_model.pl", networks)
@@ -35,8 +35,8 @@ dataset = TrafficDataset()
 print("dataset created" , dataset.to_queries())
 
 # Train the model
-loader = DataLoader(dataset, 32, False)
-train_model(model, loader, 10, log_iter=10, profile=0)
+loader = DataLoader(dataset, 1, False)
+train_model(model, loader, 1, log_iter=1, profile=0)
 
 
 
