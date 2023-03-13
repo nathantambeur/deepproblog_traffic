@@ -13,6 +13,9 @@ nn(up_net,[X], Y, [0, 1, 2, 3,4]) :: obj_up( X, Y).
 % 2 there are priority signs in the vertical direction so up and down
 nn(priority_net,[X], Y, [0, 1, 2]) :: priority(X, Y).
 
+p_new(0,0).
+p_new(1,2).
+p_new(2,1).
 
 % does the object on the left get priority
 left(X,Y) :- 
@@ -39,8 +42,10 @@ down(X,Y) :-
     obj_left(X, L),
     obj_up( X, T), 
     priority(X,P),
-    (P =:= 0 -> PNEW = 0 ; P =:= 2 -> PNEW = 1 ; P =:= 1 -> PNEW = 2),
+    p_new(P,PNEW),
+    %(P =:= 0 -> PNEW = 0 ; P =:= 2 -> PNEW = 1 ; P =:= 1 -> PNEW = 2),
     priority_rules(PNEW, D, T, R,  L,Y).
+
 
 % does the object on the top get priority
 up(X,Y) :-     
@@ -49,8 +54,18 @@ up(X,Y) :-
     obj_left(X, L),
     obj_up( X, T), 
     priority(X,P),
-    (P =:= 0 -> PNEW = 0 ; P =:= 2 -> PNEW = 1 ; P =:= 1 -> PNEW = 2),
-    priority_rules(PNEW, T, D, L,  R,Y).
+    p_new(P,PNEW),
+    %(P =:= 0 -> PNEW = 0 ; P =:= 2 -> PNEW = 1 ; P =:= 1 -> PNEW = 2),
+    has_priority(PNEW, T, D, L,  R,Y).
+
+
+has_priority(P, C, O, R, L,1):-
+    priority_rules(P, C, O, R, L,1).
+    
+has_priority(P, C, O, R, L,0):-
+    \+priority_rules(P, C, O, R, L,1).
+
+
 
 %priority_rules(P, C, O, R, L,Y)
 %p = 0 no priority signs on MY direction
@@ -63,15 +78,6 @@ up(X,Y) :-
 %L object on the left side of the intersection
 %Y = 1 object C has priority
 %Y = 0 object C has not priority
-
-
-%if the direction im going going has a crosswalk, I dont have priority.
-priority_rules(_, 0, _, 3, _, 0).
-priority_rules(_, 1, _, _, 3, 0).
-priority_rules(_, 2, 3, _, _, 0).
-
-%if there is no object there is never any priority
-priority_rules(_, 4, _, _, _, 0).
 
 %crosswalk always has priority
 priority_rules(_, 3, _, _, _,1).
@@ -108,7 +114,3 @@ priority_rules(2, 1, O, R, L,1):- %no priority,
     R =\= 0,
     R =\= 1,
     R =\= 2.
-
-%ELSE you dont have priority:
-priority_rules(_,_,_,_,_,0).
-

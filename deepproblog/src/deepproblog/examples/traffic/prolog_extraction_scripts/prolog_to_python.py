@@ -6,7 +6,7 @@ def getPriority(input):
     prolog = Prolog()
     prolog.consult('prolog.pl')
 
-    QUERY = "priority_rules({}, {}, {}, {}, {}, Y)".format(P, C, O, R, L)
+    QUERY = "has_priority({}, {}, {}, {}, {}, Y)".format(P, C, O, R, L)
     solution = next(prolog.query(QUERY))
     return solution["Y"]
 
