@@ -35,8 +35,10 @@ class TrainObject(object):
         :param backpropagate_loss:  The loss function. It should also perform the backpropagation.
         :return: The average loss over the batch
         """
+        print("get_loss")
         total_loss = 0
         result = self.model.solve(batch)
+        print("result: ",result)
         for r in result:
             self.timing[0] += r.ground_time / len(batch)
             self.timing[1] += r.compile_time / len(batch)
@@ -48,6 +50,8 @@ class TrainObject(object):
             total_loss += backpropagate_loss(
                 r, q.p, weight=1 / len(result), q=q.substitute().query
             )
+            
+
         return total_loss
 
     def get_loss_with_negatives(

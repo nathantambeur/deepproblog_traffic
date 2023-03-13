@@ -61,6 +61,10 @@ class ArithmeticCircuit(object):
         if substitution is not None:
             evaluation = {k.apply_term(substitution): evaluation[k] for k in evaluation}
         eval_time = time() - start
+        # print("evaluation ",evaluation)
+        # print("semiring: ",semiring)
+        # print("proof: ",self.proof)
+
         return Result(
             evaluation,
             semiring,

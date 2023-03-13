@@ -81,6 +81,7 @@ class Solver(object):
         :param batch: A list of queries to perform inference on.
         :return: A list of results for the given queries.
         """
+        print("Solving: ",batch)
         self.engine.tensor_store.clear()
         # Build ACs
         acs: List[ArithmeticCircuit] = [self.cache.get(q) for q in batch]

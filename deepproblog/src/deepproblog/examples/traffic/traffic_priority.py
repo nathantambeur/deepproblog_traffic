@@ -34,16 +34,19 @@ model.add_tensor_source("traffic", traffic_images)
 dataset = TrafficDataset()
 print("dataset created" , dataset.to_queries())
 
+query = dataset.to_query(0,1)
+result = model.solve([query])[0]
+print("result: ",result)
 # Train the model
 loader = DataLoader(dataset, 1, False)
 train_model(model, loader, 1, log_iter=1, profile=0)
 
 
 
-model.save_state("snapshot/trained_model.pth")
+#model.save_state("snapshot/trained_model.pth")
 
 # model.load_state("snapshot/trained_model.pth")
 # Query the model
-query = dataset.to_query(0)
-result = model.solve([query])[0]
-print(result)
+#query = dataset.to_query(0)
+#result = model.solve([query])[0]
+#print(result)
