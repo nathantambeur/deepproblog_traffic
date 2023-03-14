@@ -2,6 +2,7 @@ from pyswip import Prolog
 import pandas as pd
 import numpy as np
 import ast
+
 # input = [P, C, O, R, L], output = 0/1
 def translate_scenario_objects(scenario):
     # right down left up
@@ -23,8 +24,10 @@ def translate_scenario_objects(scenario):
 
         else:
             if "horizontal" in obj:
+                # vertical direction has priority
                 result[i] = 1
             elif "vertical" in obj:
+                # horizontal direction has priority
                 result[i] = 2
             else:
                 result[i] = 0
@@ -37,21 +40,23 @@ def translate_scenario_objects(scenario):
 def tranform_to_correct_ordering(ordering,direction):
     right_obj,down_obj,left_obj, top_obj,prio = ordering
     if direction == "left":
-        return [prio,left_obj,right_obj,down_obj,top_obj]
-    elif direction == "right":
-        return [prio,right_obj,left_obj,top_obj,down_obj]
-    elif direction == "up":
         if prio == 1:
             prio = 2
         elif prio == 2:
             prio = 1
+        return [prio,left_obj,right_obj,down_obj,top_obj]
+    elif direction == "right":
+        if prio == 1:
+            prio = 2
+        elif prio == 2:
+            prio = 1
+        return [prio,right_obj,left_obj,top_obj,down_obj]
+    elif direction == "up":
+        
 
         return [prio,top_obj,down_obj,left_obj,right_obj]
     elif direction == "down":
-        if prio == 1:
-            prio = 2
-        elif prio == 2:
-            prio = 1
+        
         return [prio,down_obj,top_obj,right_obj,left_obj]
     
 def getPriority(input):
@@ -62,7 +67,8 @@ def getPriority(input):
     print("priority_rules({}, {}, {}, {}, {}, Y)".format(P, C, O, R, L))
     QUERY = "priority_rules({}, {}, {}, {}, {}, Y)".format(P, C, O, R, L)
     solution = next(prolog.query(QUERY))
-    return solution["Y"]
+    print("solution: ",solution) 
+    return solution['Y']
 
 df = pd.read_csv("~/deepproblog_traffic/deepproblog/src/deepproblog/examples/traffic/prolog_extraction_scripts/scenarios.csv")
       
@@ -95,25 +101,31 @@ df['priority'] = new_scores
 data = list(zip(df['priority'],df['Scenario']))
 
 prolog_scores  = []
-for i in range(3,4):
+for i in range(len(df)):
     print("processing i: ",i)
     answers,scenario  = data[i]
     original_ordering = translate_scenario_objects(scenario)
     print("original_ordering: ",original_ordering)
     new_directions = ["right","down","left","up"]
+    
     #   right down left right
-
     new_orderings = [0,0,0,0]
     for j in range(0,len(new_directions)):
         print(original_ordering,new_directions[j])
         corect_ordering = tranform_to_correct_ordering(original_ordering,new_directions[j])
         print(corect_ordering)
-        new_orderings[j] = getPriority(corect_ordering)
-    print("answers: ",answers)
-    print("new_orderings: ",new_orderings)
+        new_orderings[j] = corect_ordering
+    #     new_orderings[j] = getPriority(corect_ordering)
+    # print("answers: ",answers)
+    # print("new_orderings: ",new_orderings)
     prolog_scores.append(new_orderings)
+print(len(prolog_scores))
+print(len(df))
+
 
 df['prolog_priority'] = prolog_scores
 
-print(df)
+df.to_csv('~/deepproblog_traffic/deepproblog/src/deepproblog/examples/traffic/prolog_extraction_scripts/scenarios_prolog_tmp.csv')
+print(df.head())
+
 # df.to_csv('prolog_scenarios.csv')

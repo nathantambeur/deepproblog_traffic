@@ -53,22 +53,22 @@ class TrafficDataset(Dataset):
         super().__init__()
         self.data = []
         if subset == "train":
-            df = pd.read_csv("~/deepproblog_traffic/deepproblog/src/deepproblog/examples/traffic/prolog_scenarios.csv")
+            df = pd.read_csv("/home/nathan/deepproblog_traffic/deepproblog/src/deepproblog/examples/traffic/scenarios_prolog.csv")
         else:
             df = pd.read_csv("~/deepproblog_traffic/deepproblog/src/deepproblog/examples/traffic/prolog_scenarios_test.csv")
         
-        # df['priority'] = df['priority'].apply(lambda x: ast.literal_eval(x))
+        df['prolog_priority_solved'] = df['prolog_priority_solved'].apply(lambda x: ast.literal_eval(x))
         new_data = []
-        self.data = list(df['priority'])
-        for i in range(len(self.data)):
-            new_list = []
-            for j in range(len(self.data[i])):
-                if self.data[i][j] == "1":
-                    new_list.append(1)
-                elif self.data[i][j] == "0":
-                    new_list.append(0)
-            new_data.append(new_list)
-        self.data = new_data
+        self.data = list(df['prolog_priority_solved'])
+        # for i in range(len(self.data)):
+        #     new_list = []
+        #     for j in range(len(self.data[i])):
+        #         if self.data[i][j] == "1":
+        #             new_list.append(1)
+        #         elif self.data[i][j] == "0":
+        #             new_list.append(0)
+        #     new_data.append(new_list)
+        # self.data = new_data
         self.indecies = list(df['Index'])
         
     def __len__(self):

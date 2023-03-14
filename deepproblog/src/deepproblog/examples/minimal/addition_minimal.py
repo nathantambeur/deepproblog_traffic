@@ -21,12 +21,15 @@ dataset = AdditionDataset("train")
 
 # Train the model
 loader = DataLoader(dataset, 32, True)
-model.save_state("snapshot/trained_model.pth")
+
 
 train_model(model, loader, 5, log_iter=1, profile=0)
+model.save_state("snapshot/trained_model.pth")
 
-
-# Query the model
-query = dataset.to_query(0)
-result = model.solve([query])[0]
-print(result)
+for i in range(100):
+    print()
+    print("------------------Query: "+str(i)+"--------------------------------")
+    query = dataset.to_query(i)
+    result = model.solve([query])
+    print("result: ",result)
+    print()
