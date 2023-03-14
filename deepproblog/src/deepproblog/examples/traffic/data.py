@@ -47,14 +47,29 @@ path = os.path.dirname(os.path.abspath(__file__))
 
 class TrafficDataset(Dataset):
     def __init__(
-        self
+        self,
+        subset = "train"
     ):
         super().__init__()
         self.data = []
-        df = pd.read_csv("~/deepproblog_traffic/deepproblog/src/deepproblog/examples/traffic/prolog_scenarios.csv")
+        if subset == "train":
+            df = pd.read_csv("~/deepproblog_traffic/deepproblog/src/deepproblog/examples/traffic/prolog_scenarios.csv")
+        else:
+            df = pd.read_csv("~/deepproblog_traffic/deepproblog/src/deepproblog/examples/traffic/prolog_scenarios_test.csv")
         
-        df['prolog_priority'] = df['prolog_priority'].apply(lambda x: ast.literal_eval(x))
-        self.data = list(df['prolog_priority'])
+        # df['priority'] = df['priority'].apply(lambda x: ast.literal_eval(x))
+        new_data = []
+        self.data = list(df['priority'])
+        for i in range(len(self.data)):
+            new_list = []
+            for j in range(len(self.data[i])):
+                if self.data[i][j] == "1":
+                    new_list.append(1)
+                elif self.data[i][j] == "0":
+                    new_list.append(0)
+            new_data.append(new_list)
+        self.data = new_data
+        self.indecies = list(df['Index'])
         
     def __len__(self):
         return len(self.data)
@@ -71,8 +86,8 @@ class TrafficDataset(Dataset):
         
         # ex [0,1,0,1] ==> right is 0, down is 1, left is 0, up is 1 ==> down and up get priority 
         answers = self.data[i] 
-        
-        path = "32images/img_" + str(i) + ".png"
+        ind = self.indecies[i]
+        path = "32images/img_" + str(ind) + ".png"
        
         question = ["right", "down", "left", "up"][number]
         

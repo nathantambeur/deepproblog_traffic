@@ -64,7 +64,7 @@ def getPriority(input):
     solution = next(prolog.query(QUERY))
     return solution["Y"]
 
-df = pd.read_csv("~/Desktop/deepproblog/src/deepproblog/examples/traffic/scenarios.csv")
+df = pd.read_csv("~/deepproblog_traffic/deepproblog/src/deepproblog/examples/traffic/prolog_extraction_scripts/scenarios.csv")
       
 df['Ordering'] = df['Ordering'].apply(lambda x: ast.literal_eval(x))
 df['Scenario'] = df['Scenario'].apply(lambda x: ast.literal_eval(x))
@@ -95,7 +95,7 @@ df['priority'] = new_scores
 data = list(zip(df['priority'],df['Scenario']))
 
 prolog_scores  = []
-for i in range(len(data)):
+for i in range(3,4):
     print("processing i: ",i)
     answers,scenario  = data[i]
     original_ordering = translate_scenario_objects(scenario)
@@ -104,7 +104,7 @@ for i in range(len(data)):
     #   right down left right
 
     new_orderings = [0,0,0,0]
-    for j in range(len(new_directions)):
+    for j in range(0,len(new_directions)):
         print(original_ordering,new_directions[j])
         corect_ordering = tranform_to_correct_ordering(original_ordering,new_directions[j])
         print(corect_ordering)
@@ -115,4 +115,5 @@ for i in range(len(data)):
 
 df['prolog_priority'] = prolog_scores
 
-df.to_csv('prolog_scenarios.csv')
+print(df)
+# df.to_csv('prolog_scenarios.csv')

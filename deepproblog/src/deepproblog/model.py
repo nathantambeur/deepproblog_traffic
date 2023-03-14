@@ -114,7 +114,7 @@ class Model(object):
         register_tensor_predicates(engine)
 
     def solve(self, batch: Sequence[Query]) -> List[Result]:
-        print("SOLVINGGG")
+        
         return self.solver.solve(batch)
 
     def ground_dataset(self, dataset: Dataset):
