@@ -25,7 +25,7 @@ left(X,Y) :-
     obj_up( X, T), 
     priority(X,P),
     p_new(P,PNEW),
-    has_priority(PNEW, T, D, L,  R,Y).
+    has_priority(PNEW, L, R, D,  T,Y).
 
 % does the object on the right get priority
 right(X,Y) :-     
@@ -35,7 +35,7 @@ right(X,Y) :-
     obj_up( X, T), 
     priority(X,P),
     p_new(P,PNEW),
-    has_priority(PNEW, T, D, L,  R,Y).
+    has_priority(PNEW, R, L, T,  D,Y).
     
 % does the object on the bottem get priority
 down(X,Y) :-     
@@ -44,7 +44,7 @@ down(X,Y) :-
     obj_left(X, L),
     obj_up( X, T), 
     priority(X,P),
-    has_priority(P, T, D, L,  R,Y).
+    has_priority(P, D, T, R,  L,Y).
 
 
 % does the object on the top get priority
