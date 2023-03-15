@@ -17,13 +17,13 @@ directions = ["right", "down", "left", "up"]
 networks= []
 for dir  in directions:
     cnn = CNN5()
-    cnn.load_state_dict(torch.load('model_classification_tutorial_'+dir+'.pt'))
+    # cnn.load_state_dict(torch.load('model_classification_tutorial_'+dir+'.pt'))
     net = Network(cnn, dir+"_net", batching=True)
     net.optimizer = torch.optim.Adam(cnn.parameters(), lr=1e-3)
     networks.append(net)
 
 cnn = CNN3()
-cnn.load_state_dict(torch.load('model_classification_tutorial_prio.pt'))
+# cnn.load_state_dict(torch.load('model_classification_tutorial_prio.pt'))
 net = Network(cnn , "priority_net", batching=True)
 net.optimizer = torch.optim.Adam(cnn.parameters(), lr=1e-3)
 networks.append(net)

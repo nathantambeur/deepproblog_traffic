@@ -35,6 +35,7 @@ model.set_engine(ExactEngine(model))
 model.add_tensor_source("traffic", traffic_images)
 
 dataset = TrafficDataset()
+model.load_state("snapshot/trained_model_4.pth")
 for i in range(10):
     print("------------------Query: "+str(i)+"--------------------------------")
     for j in range(4):

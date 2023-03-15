@@ -91,6 +91,7 @@ class Solver(object):
         ]
         semirings = [r.semiring for r in result]
         self.engine.perform_count(batch, (acs, semirings))
+        print("result: ",result)
         return result
 
     def get_tensor(self, term: Term):
