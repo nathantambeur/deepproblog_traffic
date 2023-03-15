@@ -26,7 +26,7 @@ left(X,Y) :-
     priority(X,P),
     p_new(P,PNEW),
     priority_rules(PNEW, L, R, D,  T,Y).
-% has_priority(P, C, O, R, L,0):-
+
 % does the object on the right get priority
 right(X,Y) :-     
     obj_right(X, R), 
@@ -44,7 +44,7 @@ down(X,Y) :-
     obj_left(X, L),
     obj_up( X, T), 
     priority(X,P),
-    priority_rules(P, D, T, L,  R,Y).
+    priority_rules(P, D, T, R,  L,Y).
 
 
 % does the object on the top get priority
