@@ -70,7 +70,7 @@ def getPriority(input):
     print("solution: ",solution) 
     return solution['Y']
 
-df = pd.read_csv("~/deepproblog_traffic/deepproblog/src/deepproblog/examples/traffic/prolog_extraction_scripts/scenarios.csv")
+df = pd.read_csv("~/deepproblog_traffic/deepproblog/src/deepproblog/examples/traffic/prolog_extraction_scripts/scenarios_test.csv")
       
 df['Ordering'] = df['Ordering'].apply(lambda x: ast.literal_eval(x))
 df['Scenario'] = df['Scenario'].apply(lambda x: ast.literal_eval(x))
